@@ -33,6 +33,8 @@ def collage(request):
                 return render(request, 'error.html')
             else:
                 iiif_manifests = []
+                webplatform_links = []
+                titels = []
                 for i in range(0, len(qlod)):
                     try:
                         response = urlopen(qlod[i]['o'])
@@ -43,13 +45,24 @@ def collage(request):
                     else:
                         data_json = json.loads(response.read())
                         afbeelding = data_json["sequences"][0]['canvases'][0]["images"][0]["resource"]["@id"]
+                        afbeelding = afbeelding.replace("full/full/0/default.jpg", "square/1000,/0/default.jpg")
+                        manifestje = data_json["@id"]
+                        objectnummer = manifestje.rpartition('/')[2]
+                        webplatform = "https://data.collectie.gent/entity/" + objectnummer
+                        titel = data_json["label"]['@value']
                         iiif_manifests.append(afbeelding)
+                        webplatform_links.append(webplatform)
+                        titels.append(titel)
+
+
                 
-                if len(iiif_manifests) > 16:
-                    iiif_manifests = iiif_manifests[:16]
-                    return render (request, 'collage.html', {'iiif_manifests':iiif_manifests, 'form':form})
+                if len(iiif_manifests) > 9:
+                    iiif_manifests = iiif_manifests[:9]
+                    data = zip(iiif_manifests, webplatform_links, titels)
+                    print(data)
+                    return render (request, 'collage.html', {'form': form, 'data':data})
                 else:
-                    return render (request, 'collage.html', {'iiif_manifests':iiif_manifests, 'form':form})
+                    return render (request, 'collage.html', {'form': form, 'data':data})
         else:
             return render(request, 'error.html')
     form = zoektermForm

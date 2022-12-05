@@ -10,16 +10,16 @@
     <title>Collage</title>
 </head>
 <body>
-    <h1>Collage</h1>
+    <h1>Collage van de Gentenaar</h1>
     <form method="post">
         {% csrf_token %}
         {{form}}
-        <button type="submit">Submit</button>
+        <button type="submit">Zoeken!</button>
     </form>
     <div class='grid'>
-        {% for manifest in iiif_manifests  %}
+        {% for afbeelding in data %}
         <div class='image'>
-            <img src='{{ manifest }}'>
+            <a href='{{ afbeelding.1 }}'><img title='{{ afbeelding.2 }}' src='{{ afbeelding.0 }}'></a>
         </div>
         {% endfor %}
     </div>
