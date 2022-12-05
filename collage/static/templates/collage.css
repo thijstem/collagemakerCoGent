@@ -1,0 +1,15 @@
+.grid {
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+    max-width: 70%;
+}
+
+.image {
+    max-height: 6cm;
+    max-width: 24cm;
+}
+
+.image img {
+    max-width: 100%;
+    max-height: 100%;
+}
